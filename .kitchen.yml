@@ -1,0 +1,59 @@
+---
+#
+# Project:: Ansible Role - CHANGEME
+#
+# Copyright 2020, Route 1337, LLC, All Rights Reserved.
+#
+# Maintainers:
+# - Matthew Ahrenstein: matthew@route1337.com
+#
+# See LICENSE
+#
+
+driver:
+  name: vagrant
+
+provisioner:
+  name: ansible_playbook
+  ansible_verbose: true
+  ansible_verbosity: 4
+  # TODO remove the next two lines once Ansible supports Focal64
+  custom_pre_install_command: sudo -H apt-get upgrade && sudo -H apt-get install -y python3-pip
+  require_ansible_omnibus: true
+
+verifier:
+  name: inspec
+
+platforms:
+  - name: ubuntu-16.04
+  - name: ubuntu-18.04
+  - name: ubuntu-20.04
+  - name: centos-7
+    driver:
+      box: futureys/centos-8
+      box_url: futureys/centos-8
+    verifier:
+      sudo_command: sudo # Fixes a weird CentOS issue where the sudo syntax is sometimes wrong
+  - name: centos-8
+    driver:
+      box: futureys/centos-8
+      box_url: futureys/centos-8
+    verifier:
+      sudo_command: sudo # Fixes a weird CentOS issue where the sudo syntax is sometimes wrong
+
+transport:
+  max_ssh_sessions: 6 # This fixes the test suite sometimes failing to transfer over to CentOS VMs
+
+suites:
+  - name: CHANGEME
+    provisioner:
+      require_ansible_repo: true
+      require_ansible_source: false
+      playbook: tests/playbooks/repo-role.yml
+      hosts: kitchen
+      roles_path: .
+      ansible_inventory: tests/inventory
+      host_vars_path: tests/host_vars/CHANGEME
+    verifier:
+      inspec_tests:
+      - tests/smoke/repo-role/default
