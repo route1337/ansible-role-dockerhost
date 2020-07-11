@@ -1,38 +1,21 @@
-Ansible Role - CHANGEME
+Ansible Role - Docker Host
 ==========================
-This repo contains a template for an Ansible role. Be sure to adjust the contents of the following files and then write your tests and role code:
-
-1. [This file!](README.md)
-2. [CHANGELOG](CHANGELOG.md)
-3. [TESTING](TESTING.md)
-4. [CONTRIBUTING](CONTRIBUTING.md)
-5. [Kitchen Test](.kitchen.yml)
-6. [Galaxy metadata](meta/main.yml)
-
-Doing a `grep -rl CHANGEME .` is a good idea ;)
+This repo contains the Docker Host (docker_host) Ansible role.
 
 What this role does
 -------------------
-CHANGEME
+Install and configure the core requirements for working with Docker on Ubuntu-based systems.
 
-This role does some stuff.
+This role performs the following:
 
-1. Some stuff
-2. More stuff
-    1. Even more stuff
-3. Lots more stuff
+1. Add the Docker official repository
+2. Install Docker and Docker Compose
+3. Install some apt package and Python prerequisites for managing Docker via Ansible
+4. Make sure Docker is running and set to start on boot.
 
 Variables
 ---------
-CHANGEME
-
-The following variables are required:
-
-1. `changeme.required_var` - A variable that is required.
-
-The following variables are optional:
-
-1. `changeme.optional_var` - A variable that is optional.
+This Ansible role does not have any variables.
 
 Testing
 -------

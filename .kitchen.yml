@@ -1,6 +1,6 @@
 ---
 #
-# Project:: Ansible Role - CHANGEME
+# Project:: Ansible Role - Docker Host
 #
 # Copyright 2020, Route 1337, LLC, All Rights Reserved.
 #
@@ -28,24 +28,9 @@ platforms:
   - name: ubuntu-16.04
   - name: ubuntu-18.04
   - name: ubuntu-20.04
-  - name: centos-7
-    driver:
-      box: futureys/centos-8
-      box_url: futureys/centos-8
-    verifier:
-      sudo_command: sudo # Fixes a weird CentOS issue where the sudo syntax is sometimes wrong
-  - name: centos-8
-    driver:
-      box: futureys/centos-8
-      box_url: futureys/centos-8
-    verifier:
-      sudo_command: sudo # Fixes a weird CentOS issue where the sudo syntax is sometimes wrong
-
-transport:
-  max_ssh_sessions: 6 # This fixes the test suite sometimes failing to transfer over to CentOS VMs
 
 suites:
-  - name: CHANGEME
+  - name: docker-host
     provisioner:
       require_ansible_repo: true
       require_ansible_source: false
@@ -53,7 +38,7 @@ suites:
       hosts: kitchen
       roles_path: .
       ansible_inventory: tests/inventory
-      host_vars_path: tests/host_vars/CHANGEME
+      host_vars_path: tests/host_vars/docker-host
     verifier:
       inspec_tests:
       - tests/smoke/repo-role/default

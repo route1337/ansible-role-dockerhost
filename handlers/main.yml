@@ -1,6 +1,6 @@
 ---
 #
-# Project:: Ansible Role - CHANGEME
+# Project:: Ansible Role - Docker Host
 #
 # Copyright 2020, Route 1337, LLC, All Rights Reserved.
 #
@@ -11,7 +11,3 @@
 #
 
 # Handlers used for various tasks in this role
-
-# Handlers for prereqs
-- name: CHANGEME
-  command: echo "CHANGEME"
