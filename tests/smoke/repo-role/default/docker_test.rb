@@ -36,7 +36,7 @@ if os[:name] == 'ubuntu'
     end
 
   # Verify the python packages required for Docker management via Ansible are installed
-  %w{docker-py six setuptools passlib}.each do |pypkg|
+  %w{six setuptools passlib}.each do |pypkg|
     describe pip(pypkg, '/usr/bin/pip3') do
       it {should be_installed }
     end

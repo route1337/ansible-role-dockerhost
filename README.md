@@ -10,8 +10,7 @@ This role performs the following:
 
 1. Add the Docker official repository
 2. Install Docker and Docker Compose
-3. Install some apt package and Python prerequisites for managing Docker via Ansible
-4. Make sure Docker is running and set to start on boot.
+3. Make sure Docker is running and set to start on boot.
 
 Variables
 ---------
