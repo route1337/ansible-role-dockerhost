@@ -6,6 +6,7 @@ Version 1.0.1
 -------------
 
 1. Adding missing `test-kitchen` gem to Gemfile
+2. Removed a python package that breaks docker-compose
 
 Version 1.0.0
 -------------

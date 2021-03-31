@@ -53,7 +53,6 @@
     state: present
   vars:
     packages:
-      - docker-py
       - six
       - setuptools
       - passlib
