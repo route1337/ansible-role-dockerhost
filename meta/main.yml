@@ -2,7 +2,7 @@
 #
 # Project:: Ansible Role - Docker Host
 #
-# Copyright 2020, Route 1337, LLC, All Rights Reserved.
+# Copyright 2020, Route 1337 LLC, All Rights Reserved.
 #
 # Maintainers:
 # - Matthew Ahrenstein: matthew@route1337.com
@@ -14,15 +14,15 @@ galaxy_info:
   role_name: "docker_host"
   author: "Matthew Ahrenstein"
   description: "Install and configure the core requirements for working with Docker on Ubuntu-based systems."
-  company: "Route 1337, LLC"
+  company: "Route 1337 LLC"
   license: "license (MIT)"
   min_ansible_version: "2.8"
   platforms:
     - name: Ubuntu
       versions:
-        - xenial
         - bionic
         - focal
+        - jammy
   galaxy_tags:
     - docker
     - server
