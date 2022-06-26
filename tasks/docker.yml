@@ -12,14 +12,19 @@
 
 # Install and configure Docker and Docker Compose
 
-- name: Add the Docker repository GPG key
-  apt_key:
+- name: Download Docker GPG key
+  get_url:
     url: https://download.docker.com/linux/ubuntu/gpg
-  when: ansible_distribution == 'Ubuntu'
+    dest: /usr/share/keyrings/docker.gpg_armored
 
-- name: (Ubuntu) Add the Docker repository
+- name: De-Armor and install Docker GPG key
+  shell: "gpg --dearmor < /usr/share/keyrings/docker.gpg_armored > /usr/share/keyrings/docker.gpg"
+  args:
+    creates: /usr/share/keyrings/docker.gpg
+
+- name: Add the Docker repository
   apt_repository:
-    repo: 'deb https://download.docker.com/linux/ubuntu {{ ansible_distribution_release }} stable'
+    repo: 'deb [arch=amd64 signed-by=/usr/share/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu {{ ansible_distribution_release }} stable'
     state: present
 
 - name: Refresh apt cache

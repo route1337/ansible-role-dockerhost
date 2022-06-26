@@ -50,4 +50,4 @@ suites:
       host_vars_path: tests/host_vars/docker-host
     verifier:
       inspec_tests:
-      - tests/smoke/repo-role/default
+        - tests/smoke/repo-role/default
