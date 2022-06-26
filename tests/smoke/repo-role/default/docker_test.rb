@@ -13,12 +13,26 @@
 
 if os[:name] == 'ubuntu'
 
+  # Verify the Docker GPG key was downloaded
+  describe file('/usr/share/keyrings/docker.gpg_armored') do
+    it { should be_owned_by 'root' }
+    it { should be_grouped_into 'root' }
+    it { should be_mode 0644}
+  end
+
+  # Verify the Docker GPG key was de-armored
+  describe file('/usr/share/keyrings/docker.gpg') do
+    it { should be_owned_by 'root' }
+    it { should be_grouped_into 'root' }
+    it { should be_mode 0644}
+  end
+
   # Verify the Docker repo deployed
   describe file('/etc/apt/sources.list.d/download_docker_com_linux_ubuntu.list') do
     it { should be_owned_by 'root' }
     it { should be_grouped_into 'root' }
     it { should be_mode 0644}
-    its(:content) { should match /deb https:\/\/download\.docker\.com\/linux\/ubuntu/ }
+    its(:content) { should match /https:\/\/download\.docker\.com\/linux\/ubuntu/ }
   end
 
   # Verify Docker and Docker Compose are installed
