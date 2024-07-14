@@ -56,12 +56,25 @@
     name: "{{ packages }}"
     executable: pip3
     state: present
+  vars:
+    packages:
+      - six
+      - setuptools
+      - passlib
+  when: ansible_distribution_version < "24.04"
+
+- name: Install required python packages (Ubuntu 24.04+)
+  pip:
+    name: "{{ packages }}"
+    executable: pip3
+    state: present
     break_system_packages: true
   vars:
     packages:
       - six
       - setuptools
       - passlib
+  when: ansible_distribution_version >= "24.04"
 
 - name: Verify the Docker service is started and enabled
   service:

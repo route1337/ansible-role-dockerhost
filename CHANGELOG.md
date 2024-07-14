@@ -2,6 +2,11 @@ Ansible Role - Docker Host: Changelog
 =====================================
 A list of all the changes made to this repo and the role it contains
 
+Version 1.2.1
+-------------
+
+1. Fix PIP issues relating to Ubuntu 24.04
+
 Version 1.2.0
 -------------
 
