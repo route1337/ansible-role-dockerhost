@@ -72,6 +72,7 @@
   ansible.builtin.apt:
     name: "{{ packages }}"
     state: present
+  register: docker_packages
   vars:
     packages:
       - docker-ce
@@ -90,7 +91,15 @@
       - python3-passlib
 
 - name: Verify the Docker service is started and enabled
-  ansible.builtin.service:
+  ansible.builtin.systemd_service:
     name: docker
     state: started
     enabled: true
+    daemon_reload: true
+
+# Restart the service if engines are swapped
+- name: Restart Docker after a package change
+  ansible.builtin.systemd_service:
+    name: docker
+    state: restarted
+  when: docker_packages.changed

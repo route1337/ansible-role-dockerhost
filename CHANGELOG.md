@@ -17,6 +17,7 @@ Version 1.3.0
 7. Removed Python PIP tasks as they are no longer needed
 8. Removed `linux-image-extra-virtual`
 9. All tasks now use fully qualified collection names
+10. The Docker service is now reloaded, and restarted when the packages change
 
 Version 1.2.1
 -------------
