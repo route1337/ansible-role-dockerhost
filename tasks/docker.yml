@@ -12,72 +12,85 @@
 
 # Install and configure Docker and Docker Compose
 
-- name: Download Docker GPG key
-  get_url:
-    url: https://download.docker.com/linux/ubuntu/gpg
-    dest: /usr/share/keyrings/docker.gpg_armored
+- name: Find any legacy Docker apt sources
+  ansible.builtin.find:
+    paths: /etc/apt/sources.list.d
+    patterns: '*.list*'
+    contains: '.*download\.docker\.com.*'
+  register: legacy_docker_source
 
-- name: De-Armor and install Docker GPG key
-  shell: "gpg --dearmor < /usr/share/keyrings/docker.gpg_armored > /usr/share/keyrings/docker.gpg"
-  args:
-    creates: /usr/share/keyrings/docker.gpg
+- name: Remove any legacy Docker apt sources
+  ansible.builtin.file:
+    path: '{{ item.path }}'
+    state: absent
+  loop: "{{ legacy_docker_source.files }}"
+  loop_control:
+    label: '{{ item.path | default("") | basename }}'
+
+- name: Remove any legacy Docker keyrings
+  ansible.builtin.file:
+    path: '{{ item }}'
+    state: absent
+  loop:
+    - /usr/share/keyrings/docker.gpg
+    - /usr/share/keyrings/docker.gpg_armored
+
+- name: Make sure the apt keyrings directory exists
+  ansible.builtin.file:
+    path: /etc/apt/keyrings
+    state: directory
+    owner: root
+    group: root
+    mode: "0755"
+
+- name: Add the Docker GPG key
+  ansible.builtin.get_url:
+    url: https://download.docker.com/linux/ubuntu/gpg
+    dest: /etc/apt/keyrings/docker.asc
+    owner: root
+    group: root
+    mode: "0644"
 
 - name: Add the Docker repository
-  apt_repository:
-    repo: 'deb [arch=amd64 signed-by=/usr/share/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu {{ ansible_distribution_release }} stable'
+  ansible.builtin.deb822_repository:
+    name: docker
+    types: deb
+    uris: https://download.docker.com/linux/ubuntu
+    suites: "{{ ansible_facts['distribution_release'] }}"
+    components: stable
+    architectures: "{{ docker_arch }}"
+    signed_by: /etc/apt/keyrings/docker.asc
     state: present
+  vars:
+    docker_arch: "{{ 'arm64' if ansible_facts['architecture'] == 'aarch64' else 'amd64' }}"
 
 - name: Refresh apt cache
-  apt:
-    update-cache: yes
+  ansible.builtin.apt:
+    update_cache: true
 
 - name: Install Docker and Docker Compose
-  apt:
+  ansible.builtin.apt:
     name: "{{ packages }}"
     state: present
   vars:
     packages:
       - docker-ce
-      - docker-compose
+      - docker-ce-cli
+      - containerd.io
+      - docker-buildx-plugin
+      - docker-compose-plugin
 
 - name: Install the prerequisites for Docker container management via Ansible
-  apt:
+  ansible.builtin.apt:
     name: "{{ packages }}"
     state: present
   vars:
     packages:
-      - python3-dev
-      - python3-pip
-      - openssl
-      - linux-image-extra-virtual # https://github.com/docker/docker/issues/15825
-
-- name: Install required python packages
-  pip:
-    name: "{{ packages }}"
-    executable: pip3
-    state: present
-  vars:
-    packages:
-      - six
-      - setuptools
-      - passlib
-  when: ansible_distribution_version < "24.04"
-
-- name: Install required python packages (Ubuntu 24.04+)
-  pip:
-    name: "{{ packages }}"
-    executable: pip3
-    state: present
-    break_system_packages: true
-  vars:
-    packages:
-      - six
-      - setuptools
-      - passlib
-  when: ansible_distribution_version >= "24.04"
+      - python3-docker
+      - python3-passlib
 
 - name: Verify the Docker service is started and enabled
-  service:
+  ansible.builtin.service:
     name: docker
     state: started
-    enabled: yes
+    enabled: true

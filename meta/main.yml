@@ -12,18 +12,20 @@
 
 galaxy_info:
   role_name: "docker_host"
+  namespace: route1337
   author: "Matthew Ahrenstein"
   description: "Install and configure the core requirements for working with Docker on Ubuntu-based systems."
   company: "Route 1337 LLC"
-  license: "license (MIT)"
-  min_ansible_version: "2.8"
+  license: "MIT"
+  min_ansible_version: "2.15"
   platforms:
     - name: Ubuntu
       versions:
-        - focal
-        - jammy
         - noble
+        - resolute
   galaxy_tags:
     - docker
     - server
     - container
+
+dependencies: []

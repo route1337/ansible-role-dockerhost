@@ -12,5 +12,5 @@
 
 # Install and configure the core requirements for working with Docker on Ubuntu-based systems.
 
-- import_tasks: docker.yml
-  when: ansible_distribution == 'Ubuntu'
+- name: Install and configure Docker
+  ansible.builtin.import_tasks: docker.yml

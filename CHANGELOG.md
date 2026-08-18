@@ -2,6 +2,22 @@ Ansible Role - Docker Host: Changelog
 =====================================
 A list of all the changes made to this repo and the role it contains
 
+Version 1.3.0
+-------------
+
+1. Test Kitchen removed
+2. Added Ubuntu 26.04 support
+3. Removed support for anything below 24.04
+   1. Role now assumes Ubuntu only without running checks
+4. Replaced Compose v1 with `docker-compose-plugin`
+5. `docker-buildx-plugin` is now installed
+6. Repository setup modernized
+   1. GPG keys are now kept armored at `/etc/apt/keyrings/docker.asc`
+   2. The architecture is now detected instead of hardcoded to `amd64`
+7. Removed Python PIP tasks as they are no longer needed
+8. Removed `linux-image-extra-virtual`
+9. All tasks now use fully qualified collection names
+
 Version 1.2.1
 -------------
 
