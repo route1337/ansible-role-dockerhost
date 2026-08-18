@@ -19,6 +19,11 @@ Version 1.3.0
 9. All tasks now use fully qualified collection names
 10. The Docker service is now reloaded, and restarted when the packages change
 
+Version 1.2.2
+-------------
+
+1. Don't install `docker-compose` as it is now built in to `docker-ce`
+
 Version 1.2.1
 -------------
 
